@@ -44,4 +44,12 @@ public class Loan {
                 break;
         }
     }
+
+    public TypeLoan getType() {
+        return TypeLoan.fromValue(type);
+    }
+
+    public void setType(TypeLoan type) {
+        this.type = type.getValue();
+    }
 }
