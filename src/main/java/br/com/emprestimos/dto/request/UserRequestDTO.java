@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class UserRequestDTO {
    //REQUEST => Dados que estão sendo enviados 
-   
     private String cpf;
     private String name;
     private String location;

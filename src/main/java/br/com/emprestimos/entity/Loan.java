@@ -6,8 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
+@Table(name ="Tb_loan")
 @Data
 @Entity
 public class Loan {
@@ -20,6 +22,8 @@ public class Loan {
 
     private Double interestRate;
 
+    //JoinColumn => especifica a coluna na tabela do banco de dados que será usada para armazenar a chave estrangeira que faz a ligação entre as entidades Loan e User
+    // No caso, a coluna user_id será criada na tabela Tb_loan para armazenar o identificador do usuário associado a cada empréstimo.
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -43,13 +47,6 @@ public class Loan {
             default:
                 break;
         }
-    }
-
-    public TypeLoan getType() {
-        return TypeLoan.fromValue(type);
-    }
-
-    public void setType(TypeLoan type) {
-        this.type = type.getValue();
-    }
+        
+    }  
 }

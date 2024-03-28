@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import br.com.emprestimos.dto.request.UserRequestDTO;
+import br.com.emprestimos.dto.response.LoanResponseDTO;
 import br.com.emprestimos.dto.response.UserResponseDTO;
 import br.com.emprestimos.entity.Loan;
 import br.com.emprestimos.entity.TypeLoan;
@@ -23,21 +24,40 @@ public class UserMapper {
         .income(userRequestDTO.getIncome()).build();
     }
 
+    // public UserResponseDTO toUserDTO(User user) {
+    //     // toUserDTO: Converte um objeto User em um objeto UserResponseDTO.
+    //     return new UserResponseDTO(user.getId(), 
+    //                                 user.getCpf(), 
+    //                                 user.getName(), 
+    //                                 user.getLocation(), 
+    //                                 user.getAge(), 
+    //                                 user.getIncome()
+    //                                 );
+    // }
+
     public UserResponseDTO toUserDTO(User user) {
         // toUserDTO: Converte um objeto User em um objeto UserResponseDTO.
-        return new UserResponseDTO(user.getId(), 
-                                    user.getCpf(), 
-                                    user.getName(), 
-                                    user.getLocation(), 
-                                    user.getAge(), 
-                                    user.getIncome()
-                                    );
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setId(user.getId());
+        userResponseDTO.setCpf(user.getCpf());
+        userResponseDTO.setName(user.getName());
+        userResponseDTO.setLocation(user.getLocation());
+        userResponseDTO.setAge(user.getAge());
+        userResponseDTO.setIncome(user.getIncome());
+
+        List<LoanResponseDTO> loanResponseDTOs = user.getLoans().stream()
+                .map(loan -> new LoanResponseDTO(loan.getType().toString(), loan.getInterestRate()))
+                .collect(Collectors.toList());
+        userResponseDTO.setLoans(loanResponseDTOs);
+
+        return userResponseDTO;
     }
+
 
     public List<UserResponseDTO> toDTO(List<User> userList) {
         // toDTO: Converte uma lista de objetos userList em uma lista de UserResponseDTO.
         return userList.stream().map(UserResponseDTO::new).collect(Collectors.toList());
-        
+
     }
 
 

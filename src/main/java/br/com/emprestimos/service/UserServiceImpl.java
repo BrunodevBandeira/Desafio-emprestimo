@@ -1,4 +1,6 @@
-package br.com.emprestimos.service.exceptions;
+package br.com.emprestimos.service;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,19 +10,11 @@ import br.com.emprestimos.dto.response.UserResponseDTO;
 import br.com.emprestimos.entity.Loan;
 import br.com.emprestimos.entity.TypeLoan;
 import br.com.emprestimos.entity.User;
-import br.com.emprestimos.repository.LoanRepository;
+// import br.com.emprestimos.repository.LoanRepository;
 import br.com.emprestimos.repository.UserRepository;
 import br.com.emprestimos.util.UserMapper;
 import lombok.RequiredArgsConstructor;
 
-
-/*
-    1 - Conceder o empréstimo pessoal se o salário do cliente for igual ou inferior a R$ 3000.
-    2 - Conceder o empréstimo pessoal se o salário do cliente estiver entre R$ 3000 e R$ 5000, se o cliente tiver menos de 30 anos e residir em São Paulo (SP).
-    3 - Conceder o empréstimo consignado se o salário do cliente for igual ou superior a R$ 5000.
-    4 - Conceder o empréstimo com garantia se o salário do cliente for igual ou inferior a R$ 3000.
-    5 - Conceder o empréstimo com garantia se o salário do cliente estiver entre R$ 3000 e R$ 5000, se o cliente tiver menos de 30 anos e residir em São Paulo (SP).
-*/
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -28,27 +22,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private final LoanRepository loanRepository;
+    // @Autowired
+    // private final LoanRepository loanRepository;
 
     @Autowired
     private final UserMapper userMapper;
 
     @Override
     public UserResponseDTO findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        return userMapper.toUserDTO(user);
+        return userMapper.toUserDTO(returnUser(id));
     }
 
     @Override
-    public UserResponseDTO findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    public List<UserResponseDTO> findAll() {
+        return userMapper.toDTO(userRepository.findAll());
     }
 
 
     @Override
     public UserResponseDTO postEmprestimo(UserRequestDTO userRequestDTO) {
+
         User user = userMapper.toUser(userRequestDTO);
     
         TypeLoan typeLoan;
@@ -63,23 +56,31 @@ public class UserServiceImpl implements UserService {
         }
     
         Loan loan = userMapper.toLoan(typeLoan, user);
+        
         user.getLoans().add(loan);
     
-        User savedUser = userRepository.save(user);
-        return userMapper.toUserDTO(savedUser);
+
+        return userMapper.toUserDTO(userRepository.save(user));
     }
     
 
     @Override
-    public UserRequestDTO updateEmprestimo(UserRequestDTO userRequestDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateEmprestimo'");
+    public UserResponseDTO updateEmprestimo(Long id, UserRequestDTO userRequestDTO) {
+        User userId = returnUser(id);
+        userMapper.updateUser(userId, userRequestDTO);
+        return userMapper.toUserDTO(userRepository.save(userId));
     }
 
     @Override
     public String delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        userRepository.deleteById(id);
+        return "User deleted successfully";
     }
+
+    private User returnUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("==> ID não encontrado <=="));
+
+    }
+ 
     
 }

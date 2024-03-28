@@ -1,4 +1,6 @@
-package br.com.emprestimos.service.exceptions;
+package br.com.emprestimos.service;
+
+import java.util.List;
 
 import br.com.emprestimos.dto.request.UserRequestDTO;
 import br.com.emprestimos.dto.response.UserResponseDTO;
@@ -6,8 +8,8 @@ import br.com.emprestimos.dto.response.UserResponseDTO;
 public interface UserService {
     
     UserResponseDTO findById(Long id);
-    UserResponseDTO findAll();
+    List<UserResponseDTO> findAll();
     UserResponseDTO postEmprestimo(UserRequestDTO userRequestDTO);
-    UserRequestDTO updateEmprestimo(UserRequestDTO userRequestDTO);
+    UserResponseDTO updateEmprestimo(Long id, UserRequestDTO userRequestDTO);
     String delete(Long id);
 }

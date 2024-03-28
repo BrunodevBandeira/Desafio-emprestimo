@@ -20,7 +20,7 @@ import lombok.Data;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY => fala pro banco de dados gerar a chave primário automaticamente confomre os registros forem inseridos na tabela
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
@@ -38,7 +38,10 @@ public class User {
 
     @Column(name = "income", nullable = false)
     private int income;
-
+    
+    // mappedBy = "user": Este atributo indica o nome do atributo na classe Loan
+    // cascade = CascadeType.ALL: Este atributo especifica que as operações de persistência realizadas no objeto User também devem ser aplicadas aos objetos Loan associados a ele.
+    // Ou seja, se um User é deletado, todos os Loan associados a ele também serão deletados.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Loan> loans = new ArrayList<>();
 
