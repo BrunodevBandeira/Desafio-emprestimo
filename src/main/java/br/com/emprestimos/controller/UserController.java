@@ -53,7 +53,7 @@ public class UserController {
         List<UserResponseDTO> user = userService.findAll();
 
         if(user.isEmpty()) {
-            throw new EmptyResultDataAccessException("Nenhuma transação encontrada", 1);
+            throw new EmptyResultDataAccessException("Nenhuma usuário encontrado", 1);
         }
 
         return ResponseEntity.ok(user);
@@ -84,7 +84,7 @@ public class UserController {
     public ResponseEntity<String> delete(@PathVariable(value = "id") Long id) {
         try {
             userService.delete(id);
-            return ResponseEntity.ok().body("Transação excluída com sucesso");
+            return ResponseEntity.ok().body("Usuário excluído com sucesso");
 
         } catch (UserNotFound e) {
             return ResponseEntity.notFound().build();
