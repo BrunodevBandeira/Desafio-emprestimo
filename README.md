@@ -14,12 +14,12 @@ Este projeto foi feito como desafio do repositorio  [backend-br](https://github.
 - Spring JPA
 - H2
 
- ## Sobre o desafio
+ ## Sobre o desafio <img align="center" alt="html" height="50px" src="https://cultofthepartyparrot.com/parrots/hd/hackerparrot.gif" />
 
  O projeto avalia critérios como idade, salário e localização para determinar as modalidades de empréstimo disponíveis para uma pessoa, como empréstimo pessoal, consignado ou com garantia.
 
 
-## Sobre o projeto.
+## Sobre o projeto. <img align="center" alt="html" height="50px" src="https://cultofthepartyparrot.com/parrots/hd/spyparrot.gif" />
 
 Neste desafio foi criado uma CRUD(Create, Read, Update e Delete) simples no Spring-boot seguindo o Padrão MVC (Model View Controller), foi utilizado o banco de dados H2.
  
